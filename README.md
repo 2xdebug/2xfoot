@@ -22,7 +22,7 @@ Une fois les secrets et la variable configurés, lancez `Refresh football data` 
 
 ## Quota API
 
-Cinq compétitions sont actualisées. Pour chacune, le générateur demande matchs du jour, classement et buteurs, soit 15 appels par exécution. Les requêtes sont espacées d'au moins 7 secondes : au plus 9 démarrages de requête dans une fenêtre glissante de 60 secondes, sous la limite de 10/minute. Aucun retry automatique n'est fait après une erreur 429. Le JSON existant n'est remplacé qu'après une collecte complète et valide.
+Cinq compétitions sont actualisées. Pour chacune, le générateur demande le calendrier des 7 prochains jours, le classement et les buteurs, soit 15 appels par exécution. Les totaux de buts et de matchs en direct restent calculés pour la date du snapshot. Les requêtes sont espacées d'au moins 7 secondes : au plus 9 démarrages de requête dans une fenêtre glissante de 60 secondes, sous la limite de 10/minute. Aucun retry automatique n'est fait après une erreur 429. Le JSON existant n'est remplacé qu'après une collecte complète et valide.
 
 Le navigateur lit `data/football.json` avec un cache CDN de 5 minutes et un cache navigateur de 1 minute. Sans snapshot valide (notamment en ouverture directe par `file://`), l'interface indique que les données sont indisponibles et n'affiche aucun résultat fictif.
 
