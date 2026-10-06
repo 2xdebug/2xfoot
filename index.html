@@ -200,6 +200,7 @@
 		.form-dot.draw { background: #d2a94b; }
 		.form-dot.loss { background: #d97968; }
 		.table-legend { display: flex; align-items: center; gap: 6px; padding: 12px 15px; border-top: 1px solid var(--line); color: #7a857d; font-size: 9px; }
+		.table-legend[hidden] { display: none; }
 		.legend-mark { width: 3px; height: 13px; border-radius: 2px; background: #68a14d; }
 		.scorers-list { padding: 0 16px 8px; }
 		.scorer-row { display: grid; grid-template-columns: 27px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 54px; border-top: 1px solid #eff1ee; }
@@ -309,7 +310,7 @@
 			<div class="sidebar-bottom">
 				<div class="demo-note">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
-					<span id="demoNote">Mode démonstration<br>Les résultats affichés sont fictifs.</span>
+					<span id="demoNote">Chargement du snapshot quotidien…</span>
 				</div>
 			</div>
 		</aside>
@@ -318,8 +319,8 @@
 			<header class="topbar">
 				<div class="breadcrumb"><span>Football</span><span aria-hidden="true">/</span><strong id="breadcrumbLeague">Premier League</strong></div>
 				<div class="top-actions">
-					<span class="demo-badge" id="dataStatus"><i></i>DÉMO · DONNÉES FICTIVES</span>
-					<button class="icon-button" id="refreshButton" type="button" aria-label="Actualiser les données de démonstration" title="Actualiser">
+					<span class="demo-badge" id="dataStatus"><i></i>CHARGEMENT DES DONNÉES</span>
+					<button class="icon-button" id="refreshButton" type="button" aria-label="Actualiser le snapshot Football-Data" title="Actualiser">
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.7-2L20 12M4 12l2.7 5a7 7 0 0 0 11.7-2"/></svg>
 					</button>
 				</div>
@@ -328,41 +329,41 @@
 			<div class="content">
 				<section class="page-heading" aria-labelledby="pageTitle">
 					<div>
-						<p class="eyebrow" id="pageEyebrow">Saison 2026 / 27 · Journée 8</p>
+						<p class="eyebrow" id="pageEyebrow">Chargement des données</p>
 						<h1 id="pageTitle">Scores du jour</h1>
 						<p class="heading-subtitle" id="headingSubtitle">Les matchs, les résultats et le classement en un coup d'œil.</p>
 					</div>
 					<div class="date-switch" aria-label="Navigation par date">
 						<button class="date-arrow" id="previousDate" type="button" aria-label="Jour précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
-						<span class="date-label" id="dateLabel">Lundi 5 octobre</span>
+						<span class="date-label" id="dateLabel">Chargement…</span>
 						<button class="date-arrow" id="nextDate" type="button" aria-label="Jour suivant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
 					</div>
 				</section>
 
 				<section class="score-hero" aria-label="Affiche du jour">
-					<div class="hero-meta"><span class="hero-live"><i></i>EN DIRECT</span><span aria-hidden="true">·</span><span id="heroCompetition">Premier League</span></div>
+					<div class="hero-meta"><span class="hero-live"><i></i>CHARGEMENT</span><span aria-hidden="true">·</span><span id="heroCompetition">Premier League</span></div>
 					<div class="hero-team">
-						<span class="team-crest" id="heroHomeCrest">ARS</span>
-						<div><div class="hero-team-name" id="heroHome">Arsenal</div><div class="hero-team-detail">À domicile</div></div>
+						<span class="team-crest" id="heroHomeCrest">—</span>
+						<div><div class="hero-team-name" id="heroHome">Chargement…</div><div class="hero-team-detail">À domicile</div></div>
 					</div>
-					<div class="hero-score" aria-label="Score"><span id="heroHomeScore">2</span><span>:</span><span id="heroAwayScore">1</span></div>
+					<div class="hero-score" aria-label="Score"><span id="heroHomeScore">–</span><span>:</span><span id="heroAwayScore">–</span></div>
 					<div class="hero-team away">
-						<div><div class="hero-team-name" id="heroAway">Liverpool</div><div class="hero-team-detail">À l'extérieur</div></div>
-						<span class="team-crest" id="heroAwayCrest">LIV</span>
+						<div><div class="hero-team-name" id="heroAway"></div><div class="hero-team-detail">À l'extérieur</div></div>
+						<span class="team-crest" id="heroAwayCrest">—</span>
 					</div>
-					<div class="hero-foot" id="heroMinute">78e minute · Emirates Stadium</div>
+					<div class="hero-foot" id="heroMinute">En attente du snapshot</div>
 				</section>
 
 				<section class="quick-stats" aria-label="Résumé de la journée">
-					<div class="quick-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V9m5 11V4m6 16v-8m5 8V6"/><path d="M2.5 20.5h19"/></svg></span><div><div class="stat-value" id="statMatches">10</div><div class="stat-label">Matchs aujourd'hui</div></div></div>
-					<div class="quick-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><div><div class="stat-value" id="statLive">3</div><div class="stat-label">En direct maintenant</div></div></div>
-					<div class="quick-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18M5 8h14M5 16h14"/><circle cx="12" cy="12" r="9"/></svg></span><div><div class="stat-value" id="statGoals">24</div><div class="stat-label">Buts inscrits</div></div></div>
+					<div class="quick-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 20V9m5 11V4m6 16v-8m5 8V6"/><path d="M2.5 20.5h19"/></svg></span><div><div class="stat-value" id="statMatches">—</div><div class="stat-label">Matchs aujourd'hui</div></div></div>
+					<div class="quick-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span><div><div class="stat-value" id="statLive">—</div><div class="stat-label">En direct maintenant</div></div></div>
+					<div class="quick-stat"><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v18M5 8h14M5 16h14"/><circle cx="12" cy="12" r="9"/></svg></span><div><div class="stat-value" id="statGoals">—</div><div class="stat-label">Buts inscrits</div></div></div>
 				</section>
 
 				<div class="dashboard-grid">
 					<section class="panel" aria-labelledby="matchesPanelTitle">
 						<div class="panel-head">
-							<div><h2 class="panel-title" id="matchesPanelTitle">Centre des matchs</h2><p class="panel-kicker" id="matchPanelKicker">Journée 8 · 5 octobre 2026</p></div>
+							<div><h2 class="panel-title" id="matchesPanelTitle">Centre des matchs</h2><p class="panel-kicker" id="matchPanelKicker">Chargement du snapshot</p></div>
 							<button class="text-button" type="button" data-view="matches">Tous les matchs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
 						</div>
 						<div class="tabs" role="tablist" aria-label="Données de la compétition">
@@ -385,15 +386,15 @@
 
 					<section class="panel" aria-labelledby="tableTitle">
 						<div class="panel-head">
-							<div><h2 class="panel-title" id="tableTitle">Classement</h2><p class="panel-kicker" id="tableKicker">Premier League · Saison 2026 / 27</p></div>
+							<div><h2 class="panel-title" id="tableTitle">Classement</h2><p class="panel-kicker" id="tableKicker">Chargement du snapshot</p></div>
 							<button class="text-button" type="button" data-view="table">Complet <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
 						</div>
 						<div class="table-wrap" id="standingsPreview"></div>
-						<div class="table-legend"><span class="legend-mark"></span><span>Qualification en Ligue des champions</span></div>
+						<div class="table-legend" id="tableLegend" hidden><span class="legend-mark"></span><span>Qualification en Ligue des champions</span></div>
 					</section>
 				</div>
 
-				<footer class="content-footer"><span>2xFoot · Tableau de bord football</span><span id="updatedAt">Données de démonstration · actualisées à l'instant</span></footer>
+				<footer class="content-footer"><span>2xFoot · Tableau de bord football</span><span id="updatedAt">Chargement du snapshot Football-Data…</span></footer>
 			</div>
 		</main>
 	</div>
@@ -401,90 +402,16 @@
 	<script src="./data.js"></script>
 	<script>
 		let competitions = {
-			premier: {
-				name: "Premier League", flag: "🏴", season: "2026 / 27", round: 8, liveCount: 3, goals: 24,
-				teams: [
-					["Arsenal", "ARS", 19, 8, 1, 0, 22, 7, "WWDWW", "Bukayo Saka", 7], ["Liverpool", "LIV", 18, 8, 0, 2, 21, 10, "WWWLW", "Mohamed Salah", 6],
-					["Man City", "MCI", 17, 8, 2, 1, 19, 8, "WDWWW", "Erling Haaland", 9], ["Aston Villa", "AVL", 16, 8, 1, 2, 18, 12, "WWLWD", "Ollie Watkins", 5],
-					["Tottenham", "TOT", 14, 8, 2, 2, 17, 13, "WDLWW", "Son Heung-min", 5], ["Newcastle", "NEW", 13, 8, 1, 3, 16, 14, "WLWDW", "Alexander Isak", 6],
-					["Brighton", "BHA", 12, 8, 1, 3, 15, 14, "LWWDL", "João Pedro", 4], ["Man United", "MUN", 11, 8, 2, 3, 12, 13, "DWLWW", "Bruno Fernandes", 3]
-				],
-				matches: [
-					{ home: "Arsenal", away: "Liverpool", hs: 2, as: 1, status: "live", time: "78'", venue: "Emirates Stadium" },
-					{ home: "Man City", away: "Brighton", hs: 1, as: 0, status: "live", time: "63'" },
-					{ home: "Aston Villa", away: "Tottenham", hs: 0, as: 0, status: "live", time: "41'" },
-					{ home: "Newcastle", away: "Man United", hs: null, as: null, status: "upcoming", time: "20:00" },
-					{ home: "Chelsea", away: "West Ham", hs: 2, as: 2, status: "finished", time: "Terminé" },
-					{ home: "Fulham", away: "Brentford", hs: null, as: null, status: "upcoming", time: "Demain" }
-				]
-			},
-			laliga: {
-				name: "La Liga", flag: "🇪🇸", season: "2026 / 27", round: 9, liveCount: 2, goals: 18,
-				teams: [
-					["Real Madrid", "RMA", 21, 9, 0, 0, 24, 6, "WWWWW", "Kylian Mbappé", 8], ["Barcelona", "FCB", 19, 9, 1, 0, 23, 9, "WWDWW", "Robert Lewandowski", 7],
-					["Girona", "GIR", 17, 9, 2, 1, 19, 12, "WDWWW", "Artem Dovbyk", 6], ["Atlético", "ATM", 16, 9, 1, 2, 18, 10, "WWWLW", "Antoine Griezmann", 5],
-					["Athletic Club", "ATH", 14, 9, 2, 2, 15, 11, "WDLWW", "Iñaki Williams", 4], ["Real Sociedad", "RSO", 13, 9, 1, 3, 13, 11, "WLWDW", "Mikel Oyarzabal", 4],
-					["Valencia", "VAL", 11, 9, 2, 3, 10, 12, "LWWDL", "Hugo Duro", 3], ["Betis", "BET", 10, 9, 1, 4, 11, 14, "DWLWW", "Isco", 3]
-				],
-				matches: [
-					{ home: "Real Madrid", away: "Barcelona", hs: 1, as: 1, status: "live", time: "72'", venue: "Santiago Bernabéu" },
-					{ home: "Girona", away: "Valencia", hs: 2, as: 0, status: "live", time: "58'" },
-					{ home: "Atlético", away: "Betis", hs: 3, as: 1, status: "finished", time: "Terminé" },
-					{ home: "Athletic Club", away: "Real Sociedad", hs: null, as: null, status: "upcoming", time: "20:00" },
-					{ home: "Sevilla", away: "Villarreal", hs: 0, as: 1, status: "finished", time: "Terminé" }
-				]
-			},
-			bundesliga: {
-				name: "Bundesliga", flag: "🇩🇪", season: "2026 / 27", round: 7, liveCount: 1, goals: 21,
-				teams: [
-					["Bayern", "FCB", 18, 7, 1, 0, 25, 6, "WWWWW", "Harry Kane", 8], ["Leverkusen", "B04", 17, 7, 2, 0, 22, 7, "WWDWW", "Florian Wirtz", 6],
-					["Stuttgart", "VFB", 15, 7, 0, 2, 18, 10, "WDWWW", "Serhou Guirassy", 7], ["Dortmund", "BVB", 14, 7, 2, 1, 16, 11, "WWWLW", "Niclas Füllkrug", 4],
-					["Leipzig", "RBL", 13, 7, 1, 2, 17, 12, "WDLWW", "Loïs Openda", 5], ["Hoffenheim", "TSG", 12, 7, 2, 2, 15, 14, "WLWDW", "Maximilian Beier", 4],
-					["Frankfurt", "SGE", 10, 7, 1, 3, 10, 11, "LWWDL", "Omar Marmoush", 3], ["Freiburg", "SCF", 9, 7, 2, 3, 9, 13, "DWLWW", "Vincenzo Grifo", 3]
-				],
-				matches: [
-					{ home: "Bayern", away: "Dortmund", hs: 2, as: 1, status: "live", time: "67'", venue: "Allianz Arena" },
-					{ home: "Leverkusen", away: "Stuttgart", hs: 2, as: 0, status: "finished", time: "Terminé" },
-					{ home: "Leipzig", away: "Hoffenheim", hs: null, as: null, status: "upcoming", time: "18:30" },
-					{ home: "Frankfurt", away: "Freiburg", hs: 1, as: 1, status: "finished", time: "Terminé" }
-				]
-			},
-			seriea: {
-				name: "Serie A", flag: "🇮🇹", season: "2026 / 27", round: 8, liveCount: 2, goals: 19,
-				teams: [
-					["Inter", "INT", 19, 8, 1, 0, 21, 5, "WWWWW", "Lautaro Martínez", 7], ["Milan", "MIL", 18, 8, 0, 1, 18, 8, "WWDWW", "Olivier Giroud", 5],
-					["Juventus", "JUV", 17, 8, 2, 0, 14, 6, "WDWWW", "Dušan Vlahović", 6], ["Napoli", "NAP", 14, 8, 1, 2, 19, 12, "WWWLW", "Victor Osimhen", 6],
-					["Atalanta", "ATA", 13, 8, 1, 3, 16, 11, "WDLWW", "Ademola Lookman", 4], ["Roma", "ROM", 12, 8, 2, 2, 15, 12, "WLWDW", "Paulo Dybala", 4],
-					["Fiorentina", "FIO", 11, 8, 2, 3, 13, 11, "LWWDL", "Nicolás González", 3], ["Lazio", "LAZ", 10, 8, 1, 4, 11, 12, "DWLWW", "Ciro Immobile", 3]
-				],
-				matches: [
-					{ home: "Inter", away: "Milan", hs: 2, as: 0, status: "live", time: "64'", venue: "San Siro" },
-					{ home: "Juventus", away: "Napoli", hs: 1, as: 1, status: "live", time: "51'" },
-					{ home: "Atalanta", away: "Roma", hs: 3, as: 0, status: "finished", time: "Terminé" },
-					{ home: "Fiorentina", away: "Lazio", hs: null, as: null, status: "upcoming", time: "20:45" }
-				]
-			},
-			ligue1: {
-				name: "Ligue 1", flag: "🇫🇷", season: "2026 / 27", round: 8, liveCount: 1, goals: 17,
-				teams: [
-					["Paris SG", "PSG", 18, 8, 2, 0, 22, 8, "WWWWW", "Kylian Mbappé", 8], ["Monaco", "ASM", 17, 8, 1, 1, 19, 10, "WWDWW", "Wissam Ben Yedder", 6],
-					["Nice", "OGC", 16, 8, 1, 1, 13, 5, "WDWWW", "Terem Moffi", 5], ["Marseille", "OM", 14, 8, 2, 1, 16, 11, "WWWLW", "Pierre-Emerick Aubameyang", 4],
-					["Lille", "LOSC", 13, 8, 1, 3, 14, 10, "WDLWW", "Jonathan David", 5], ["Rennes", "SRFC", 12, 8, 2, 2, 15, 13, "WLWDW", "Arnaud Kalimuendo", 4],
-					["Lens", "RCL", 10, 8, 1, 4, 10, 12, "LWWDL", "Elye Wahi", 3], ["Lyon", "OL", 8, 8, 2, 4, 9, 15, "DWLWW", "Alexandre Lacazette", 3]
-				],
-				matches: [
-					{ home: "Paris SG", away: "Marseille", hs: 2, as: 1, status: "live", time: "70'", venue: "Parc des Princes" },
-					{ home: "Monaco", away: "Nice", hs: 1, as: 0, status: "finished", time: "Terminé" },
-					{ home: "Lille", away: "Rennes", hs: null, as: null, status: "upcoming", time: "19:00" },
-					{ home: "Lens", away: "Lyon", hs: 2, as: 2, status: "finished", time: "Terminé" }
-				]
-			}
+			premier: { name: "Premier League", flag: "🏴", season: "", round: 0, liveCount: 0, goals: 0, teams: [], matches: [], scorers: [] },
+			laliga: { name: "La Liga", flag: "🇪🇸", season: "", round: 0, liveCount: 0, goals: 0, teams: [], matches: [], scorers: [] },
+			bundesliga: { name: "Bundesliga", flag: "🇩🇪", season: "", round: 0, liveCount: 0, goals: 0, teams: [], matches: [], scorers: [] },
+			seriea: { name: "Serie A", flag: "🇮🇹", season: "", round: 0, liveCount: 0, goals: 0, teams: [], matches: [], scorers: [] },
+			ligue1: { name: "Ligue 1", flag: "🇫🇷", season: "", round: 0, liveCount: 0, goals: 0, teams: [], matches: [], scorers: [] }
 		};
-
 		const colors = ["#e9eef7|#254b83", "#f3e9e6|#a44736", "#e9f1e5|#3f6a38", "#f3eee0|#8b7132", "#eee9f3|#674c83", "#e7eff0|#32616a", "#f2e9ed|#863e5a", "#e9ece8|#45534a"];
-		const state = { competition: "premier", view: "matches", filter: "all", search: "", day: 5 };
-		const mockCompetitions = competitions;
+		const state = { competition: "premier", view: "matches", filter: "all", search: "" };
 		let liveSnapshot = null;
+		let snapshotState = "loading";
 		const $ = (selector, parent = document) => parent.querySelector(selector);
 		const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
 
@@ -508,15 +435,17 @@
 		function renderHero() {
 			const league = currentCompetition();
 			const match = league.matches.find((item) => item.status === "live") || league.matches[0];
+			$("#heroCompetition").textContent = league.name;
 			if (!match) {
-				$("#heroHome").textContent = "Aucun match";
-				$("#heroAway").textContent = "au programme";
+				$("#heroHome").textContent = liveSnapshot ? "Aucun match aujourd'hui" : "Données indisponibles";
+				$("#heroAway").textContent = "";
 				$("#heroHomeCrest").textContent = "—";
 				$("#heroAwayCrest").textContent = "—";
 				$("#heroHomeScore").textContent = "–";
 				$("#heroAwayScore").textContent = "–";
-				$("#heroMinute").textContent = "Pas de rencontre aujourd'hui";
-				$(".hero-live").innerHTML = "<i></i>AUJOURD'HUI";
+				$("#heroMinute").textContent = liveSnapshot ? "Aucune rencontre programmée" : "Snapshot Football-Data indisponible";
+				$$(".hero-team-detail").forEach((detail) => { detail.textContent = ""; });
+				$(".hero-live").innerHTML = liveSnapshot ? "<i></i>AUJOURD'HUI" : "<i></i>INDISPONIBLE";
 				return;
 			}
 			$("#heroCompetition").textContent = league.name;
@@ -539,7 +468,8 @@
 			});
 			const list = $("#primaryList");
 			if (!filtered.length) {
-				list.innerHTML = '<div class="empty-state">Aucun match ne correspond à cette recherche.</div>';
+				const message = currentCompetition().matches.length ? "Aucun match ne correspond à cette recherche." : liveSnapshot ? "Aucun match programmé aujourd'hui." : "Scores indisponibles : aucun snapshot API valide n'a été chargé.";
+				list.innerHTML = `<div class="empty-state">${message}</div>`;
 				return;
 			}
 			list.innerHTML = `<div class="match-list">${filtered.map((match) => {
@@ -558,6 +488,7 @@
 
 		function renderTable(compact = false) {
 			const teams = currentCompetition().teams;
+			if (!teams.length) return `<div class="empty-state">${liveSnapshot ? "Classement indisponible." : "Classement indisponible : aucun snapshot API valide n'a été chargé."}</div>`;
 			const visibleTeams = compact ? teams.slice(0, 6) : teams;
 			const rows = visibleTeams.map((team, index) => {
 				const [name, , points, played, , , goalsFor, goalsAgainst, form] = team;
@@ -568,9 +499,9 @@
 		}
 
 		function renderScorers() {
-			const scorers = currentCompetition().scorers || currentCompetition().teams.map((team) => ({ name: team[9], goals: team[10], club: team[0] })).filter((scorer) => scorer.name).sort((a, b) => b.goals - a.goals).slice(0, 7);
-			if (!scorers.length) return '<div class="empty-state">Aucun buteur disponible pour le moment.</div>';
-			return `<div class="scorers-list">${scorers.map((scorer, index) => `<div class="scorer-row"><span class="scorer-rank">${String(index + 1).padStart(2, "0")}</span><div><div class="scorer-name">${scorer.name}</div><div class="scorer-club">${scorer.club}</div></div><div class="scorer-goals">${scorer.goals}<small>buts</small></div></div>`).join("")}</div><div class="panel-foot">${liveSnapshot ? "Source : Football-Data.org" : "Classement fictif des buteurs de la compétition"}</div>`;
+			const scorers = currentCompetition().scorers || [];
+			if (!scorers.length) return liveSnapshot ? '<div class="empty-state">Aucun buteur disponible.</div>' : '<div class="empty-state">Buteurs indisponibles : aucun snapshot API valide.</div>';
+			return `<div class="scorers-list">${scorers.map((scorer, index) => `<div class="scorer-row"><span class="scorer-rank">${String(index + 1).padStart(2, "0")}</span><div><div class="scorer-name">${scorer.name}</div><div class="scorer-club">${scorer.club}</div></div><div class="scorer-goals">${scorer.goals}<small>buts</small></div></div>`).join("")}</div><div class="panel-foot">Source : Football-Data.org</div>`;
 		}
 
 		function setView(view) {
@@ -585,7 +516,7 @@
 			});
 			$("#matchControls").hidden = view !== "matches";
 			$("#matchesPanelTitle").textContent = view === "matches" ? "Centre des matchs" : view === "table" ? "Classement complet" : "Meilleurs buteurs";
-			$("#matchPanelKicker").textContent = `${currentCompetition().name} · Saison ${currentCompetition().season}`;
+			$("#matchPanelKicker").textContent = liveSnapshot ? `${currentCompetition().name} · Saison ${currentCompetition().season}` : snapshotState === "loading" ? "Chargement du snapshot Football-Data…" : "Aucune donnée de match disponible";
 			$("#primaryList").innerHTML = view === "matches" ? "" : view === "table" ? `<div class="table-wrap">${renderTable(false)}</div><div class="table-legend"><span class="legend-mark"></span><span>Qualification en Ligue des champions</span></div>` : renderScorers();
 			if (view === "matches") renderMatches();
 		}
@@ -593,17 +524,17 @@
 		function updatePage() {
 			const league = currentCompetition();
 			$("#breadcrumbLeague").textContent = league.name;
-			$("#pageEyebrow").textContent = `Saison ${league.season} · Journée ${league.round}`;
-			$("#tableKicker").textContent = `${league.name} · Saison ${league.season}`;
-			$("#statMatches").textContent = league.matches.length;
-			$("#statLive").textContent = league.liveCount;
-			$("#statGoals").textContent = league.goals;
-			const selectedDate = liveSnapshot?.date ? new Date(`${liveSnapshot.date}T12:00:00`) : new Date(2026, 9, state.day);
-			const formattedDate = selectedDate.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-			$("#dateLabel").textContent = selectedDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
-			$("#matchPanelKicker").textContent = `Journée ${league.round} · ${formattedDate}`;
-			$("#previousDate").disabled = Boolean(liveSnapshot);
-			$("#nextDate").disabled = Boolean(liveSnapshot);
+			$("#pageEyebrow").textContent = liveSnapshot ? `Saison ${league.season} · Journée ${league.round}` : snapshotState === "loading" ? "Chargement des données Football-Data" : "Données API indisponibles";
+			$("#tableKicker").textContent = liveSnapshot ? `${league.name} · Saison ${league.season}` : snapshotState === "loading" ? "Chargement du classement…" : "Aucun classement disponible";
+			$("#statMatches").textContent = liveSnapshot ? league.matches.length : "—";
+			$("#statLive").textContent = liveSnapshot ? league.liveCount : "—";
+			$("#statGoals").textContent = liveSnapshot ? league.goals : "—";
+			const selectedDate = liveSnapshot?.date ? new Date(`${liveSnapshot.date}T12:00:00`) : null;
+			
+			$("#dateLabel").textContent = selectedDate ? selectedDate.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) : snapshotState === "loading" ? "Chargement…" : "Date indisponible";
+			$("#tableLegend").hidden = !liveSnapshot || !league.teams.length;
+			$("#previousDate").disabled = true;
+			$("#nextDate").disabled = true;
 			$("#standingsPreview").innerHTML = renderTable(true);
 			renderLeagueNav();
 			renderHero();
@@ -632,20 +563,19 @@
 		});
 
 		$("#teamSearch").addEventListener("input", (event) => { state.search = event.target.value; renderMatches(); });
-		$("#previousDate").addEventListener("click", () => { state.day = state.day === 5 ? 4 : 5; updatePage(); });
-		$("#nextDate").addEventListener("click", () => { state.day = state.day === 5 ? 6 : 5; updatePage(); });
-		function applySnapshot(snapshot) {
-			competitions = snapshot.competitions;
+				function applySnapshot(snapshot) {
 			liveSnapshot = snapshot.isLive ? snapshot : null;
+			snapshotState = liveSnapshot ? "live" : "unavailable";
+			if (liveSnapshot) competitions = liveSnapshot.competitions;
 			if (liveSnapshot) {
 				const generatedTime = new Date(liveSnapshot.generatedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 				$("#dataStatus").innerHTML = `<i></i>FOOTBALL-DATA · ${generatedTime}`;
 				$("#demoNote").innerHTML = "Source Football-Data.org<br>Données du jour";
 				$("#updatedAt").textContent = `Football-Data.org · snapshot du ${liveSnapshot.date} à ${generatedTime}`;
 			} else {
-				$("#dataStatus").innerHTML = "<i></i>DÉMO · DONNÉES FICTIVES";
-				$("#demoNote").innerHTML = "Mode démonstration<br>Les résultats affichés sont fictifs.";
-				$("#updatedAt").textContent = "Données de démonstration · actualisées à l'instant";
+				$("#dataStatus").innerHTML = "<i></i>API INDISPONIBLE";
+				$("#demoNote").textContent = "Aucun snapshot valide n'est publié.";
+				$("#updatedAt").textContent = "Les données Football-Data sont temporairement indisponibles.";
 			}
 			updatePage();
 		}
@@ -653,14 +583,14 @@
 		$("#refreshButton").addEventListener("click", async (event) => {
 			const button = event.currentTarget;
 			button.classList.add("is-refreshing");
-			button.setAttribute("aria-label", "Actualisation du snapshot de données");
-			applySnapshot(await window.loadFootballSnapshot(mockCompetitions));
+			button.setAttribute("aria-label", "Actualisation du snapshot Football-Data");
+			applySnapshot(await window.loadFootballSnapshot());
 			button.classList.remove("is-refreshing");
-			button.setAttribute("aria-label", "Actualiser les données");
+			button.setAttribute("aria-label", "Actualiser le snapshot Football-Data");
 		});
 
 		updatePage();
-		window.loadFootballSnapshot(mockCompetitions).then(applySnapshot);
+		window.loadFootballSnapshot().then(applySnapshot);
 	</script>
 </body>
 </html>
