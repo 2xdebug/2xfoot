@@ -75,6 +75,11 @@ class FetchDataTests(unittest.TestCase):
                     "homeTeam": {"shortName": "Arsenal"}, "awayTeam": {"shortName": "Liverpool"},
                     "score": {},
                 },
+                {
+                    "status": "FINISHED", "utcDate": "2026-10-04T15:00:00Z",
+                    "homeTeam": {"shortName": "Arsenal"}, "awayTeam": {"shortName": "Liverpool"},
+                    "score": {"fullTime": {"home": 2, "away": 0}},
+                },
             ]},
             {
                 "competition": {"name": "Premier League"},
@@ -91,8 +96,9 @@ class FetchDataTests(unittest.TestCase):
         self.assertEqual(result["season"], "2026 / 27")
         self.assertEqual(result["teams"][0][:9], ["Arsenal", "ARS", 19, 8, 6, 1, 20, 8, "WWDLW"])
         self.assertEqual(result["scorers"][0]["name"], "Example Striker")
-        self.assertEqual(len(result["matches"]), 2)
+        self.assertEqual(len(result["matches"]), 3)
         self.assertEqual(result["matches"][1]["date"], "2026-10-06")
+        self.assertEqual(result["matches"][2]["date"], "2026-10-04")
         self.assertEqual(result["goals"], 1)
 
     def test_snapshot_uses_three_requests_per_competition(self):
@@ -101,7 +107,7 @@ class FetchDataTests(unittest.TestCase):
         self.assertEqual(len(client.calls), 15)
         self.assertEqual(snapshot["date"], "2026-10-05")
         self.assertEqual(set(snapshot["competitions"]), set(COMPETITIONS))
-        self.assertEqual(client.calls[0][1], {"dateFrom": "2026-10-05", "dateTo": "2026-10-12"})
+        self.assertEqual(client.calls[0][1], {"dateFrom": "2026-10-02", "dateTo": "2026-10-13"})
 
     def test_client_spaces_requests_at_seven_seconds(self):
         now = [0.0]
