@@ -173,6 +173,8 @@
 		.match-row { display: grid; grid-template-columns: 47px minmax(0, 1fr) 42px minmax(0, 1fr) 58px; align-items: center; gap: 8px; min-height: 64px; border-top: 1px solid #eff1ee; }
 		.match-time { color: #78847b; font-size: 10px; font-weight: 600; }
 		.match-time.live { color: var(--live); }
+		.match-time.has-date { display: grid; gap: 2px; line-height: 1.1; }
+		.match-date { color: #8b958d; font-size: 8px; font-weight: 600; }
 		.match-club { display: flex; min-width: 0; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
 		.match-club.away { justify-content: flex-end; text-align: right; }
 		.mini-crest { display: grid; width: 25px; height: 25px; flex: 0 0 auto; place-items: center; border-radius: 7px; background: var(--crest-bg, #eff2eb); color: var(--crest-fg, #345239); font-family: Impact, "Arial Narrow", sans-serif; font-size: 9px; font-weight: 600; }
@@ -330,8 +332,8 @@
 				<section class="page-heading" aria-labelledby="pageTitle">
 					<div>
 						<p class="eyebrow" id="pageEyebrow">Chargement des données</p>
-						<h1 id="pageTitle">Scores du jour</h1>
-						<p class="heading-subtitle" id="headingSubtitle">Les matchs, les résultats et le classement en un coup d'œil.</p>
+						<h1 id="pageTitle">Matchs & calendrier</h1>
+						<p class="heading-subtitle" id="headingSubtitle">Scores du jour et rencontres programmées sur les 7 prochains jours.</p>
 					</div>
 					<div class="date-switch" aria-label="Navigation par date">
 						<button class="date-arrow" id="previousDate" type="button" aria-label="Jour précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -437,7 +439,7 @@
 			const match = league.matches.find((item) => item.status === "live") || league.matches[0];
 			$("#heroCompetition").textContent = league.name;
 			if (!match) {
-				$("#heroHome").textContent = liveSnapshot ? "Aucun match aujourd'hui" : "Données indisponibles";
+				$("#heroHome").textContent = liveSnapshot ? "Aucun match cette semaine" : "Données indisponibles";
 				$("#heroAway").textContent = "";
 				$("#heroHomeCrest").textContent = "—";
 				$("#heroAwayCrest").textContent = "—";
@@ -455,8 +457,11 @@
 			$("#heroAwayCrest").textContent = club(match.away)[1];
 			$("#heroHomeScore").textContent = match.hs ?? "-";
 			$("#heroAwayScore").textContent = match.as ?? "-";
-			$("#heroMinute").textContent = `${match.time}${match.venue ? ` · ${match.venue}` : " · Affiche du jour"}`;
-			$(".hero-live").innerHTML = match.status === "live" ? "<i></i>EN DIRECT" : "<i></i>À LA UNE";
+			const matchDate = liveSnapshot && match.date && match.date !== liveSnapshot.date
+				? `${new Date(`${match.date}T12:00:00`).toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })} · `
+				: "";
+			$("#heroMinute").textContent = `${matchDate}${match.time}${match.venue ? ` · ${match.venue}` : ""}`;
+			$(".hero-live").innerHTML = match.status === "live" ? "<i></i>EN DIRECT" : match.date && match.date !== liveSnapshot?.date ? "<i></i>PROCHAIN MATCH" : "<i></i>À LA UNE";
 		}
 
 		function renderMatches() {
@@ -468,16 +473,20 @@
 			});
 			const list = $("#primaryList");
 			if (!filtered.length) {
-				const message = currentCompetition().matches.length ? "Aucun match ne correspond à cette recherche." : liveSnapshot ? "Aucun match programmé aujourd'hui." : "Scores indisponibles : aucun snapshot API valide n'a été chargé.";
+				const message = currentCompetition().matches.length ? "Aucun match ne correspond à cette recherche." : liveSnapshot ? "Aucun match programmé dans les 7 prochains jours." : "Scores indisponibles : aucun snapshot API valide n'a été chargé.";
 				list.innerHTML = `<div class="empty-state">${message}</div>`;
 				return;
 			}
 			list.innerHTML = `<div class="match-list">${filtered.map((match) => {
 				const isLive = match.status === "live";
+				const dateLabel = liveSnapshot && match.date && match.date !== liveSnapshot.date
+					? new Date(`${match.date}T12:00:00`).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })
+					: "";
+				const timeLabel = dateLabel ? `<span class="match-date">${dateLabel}</span><span>${match.time}</span>` : match.time;
 				const score = match.status === "upcoming" ? "–" : `${match.hs} : ${match.as}`;
 				const statusText = isLive ? "EN DIRECT" : match.status === "finished" ? "TERMINÉ" : "À VENIR";
 				return `<article class="match-row">
-					<span class="match-time${isLive ? " live" : ""}">${match.time}</span>
+					<span class="match-time${isLive ? " live" : ""}${dateLabel ? " has-date" : ""}">${timeLabel}</span>
 					<span class="match-club">${crestMarkup(match.home)}<span class="club-name">${match.home}</span></span>
 					<span class="match-score${match.status === "upcoming" ? " upcoming" : ""}" aria-label="${score}">${score}</span>
 					<span class="match-club away"><span class="club-name">${match.away}</span>${crestMarkup(match.away)}</span>
@@ -516,7 +525,7 @@
 			});
 			$("#matchControls").hidden = view !== "matches";
 			$("#matchesPanelTitle").textContent = view === "matches" ? "Centre des matchs" : view === "table" ? "Classement complet" : "Meilleurs buteurs";
-			$("#matchPanelKicker").textContent = liveSnapshot ? `${currentCompetition().name} · Saison ${currentCompetition().season}` : snapshotState === "loading" ? "Chargement du snapshot Football-Data…" : "Aucune donnée de match disponible";
+			$("#matchPanelKicker").textContent = liveSnapshot ? `${currentCompetition().name} · Saison ${currentCompetition().season} · 7 jours` : snapshotState === "loading" ? "Chargement du snapshot Football-Data…" : "Aucune donnée de match disponible";
 			$("#primaryList").innerHTML = view === "matches" ? "" : view === "table" ? `<div class="table-wrap">${renderTable(false)}</div><div class="table-legend"><span class="legend-mark"></span><span>Qualification en Ligue des champions</span></div>` : renderScorers();
 			if (view === "matches") renderMatches();
 		}
