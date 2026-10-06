@@ -58,12 +58,24 @@ class FetchDataTests(unittest.TestCase):
         })
         self.assertEqual(mapped["status"], "live")
         self.assertEqual(mapped["time"], "78'")
+        self.assertEqual(mapped["date"], "2026-10-05")
         self.assertEqual((mapped["hs"], mapped["as"]), (2, 1))
 
     def test_competition_maps_table_and_top_scorer(self):
         result = build_competition(
             COMPETITIONS["premier"],
-            {"matches": []},
+            {"matches": [
+                {
+                    "status": "FINISHED", "utcDate": "2026-10-05T18:00:00Z",
+                    "homeTeam": {"shortName": "Arsenal"}, "awayTeam": {"shortName": "Liverpool"},
+                    "score": {"fullTime": {"home": 1, "away": 0}},
+                },
+                {
+                    "status": "SCHEDULED", "utcDate": "2026-10-06T18:00:00Z",
+                    "homeTeam": {"shortName": "Arsenal"}, "awayTeam": {"shortName": "Liverpool"},
+                    "score": {},
+                },
+            ]},
             {
                 "competition": {"name": "Premier League"},
                 "season": {"startDate": "2026-08-01", "endDate": "2027-05-31", "currentMatchday": 8},
@@ -74,10 +86,14 @@ class FetchDataTests(unittest.TestCase):
                 }]}],
             },
             {"scorers": [{"player": {"name": "Example Striker"}, "team": {"shortName": "Arsenal"}, "goals": 7}]},
+            today=date(2026, 10, 5),
         )
         self.assertEqual(result["season"], "2026 / 27")
         self.assertEqual(result["teams"][0][:9], ["Arsenal", "ARS", 19, 8, 6, 1, 20, 8, "WWDLW"])
         self.assertEqual(result["scorers"][0]["name"], "Example Striker")
+        self.assertEqual(len(result["matches"]), 2)
+        self.assertEqual(result["matches"][1]["date"], "2026-10-06")
+        self.assertEqual(result["goals"], 1)
 
     def test_snapshot_uses_three_requests_per_competition(self):
         client = FakeClient()
@@ -85,7 +101,7 @@ class FetchDataTests(unittest.TestCase):
         self.assertEqual(len(client.calls), 15)
         self.assertEqual(snapshot["date"], "2026-10-05")
         self.assertEqual(set(snapshot["competitions"]), set(COMPETITIONS))
-        self.assertEqual(client.calls[0][1], {"dateFrom": "2026-10-05", "dateTo": "2026-10-06"})
+        self.assertEqual(client.calls[0][1], {"dateFrom": "2026-10-05", "dateTo": "2026-10-12"})
 
     def test_client_spaces_requests_at_seven_seconds(self):
         now = [0.0]
