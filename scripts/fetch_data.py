@@ -16,6 +16,7 @@ API_BASE = "https://api.football-data.org/v4"
 PARIS = ZoneInfo("Europe/Paris")
 MIN_REQUEST_INTERVAL_SECONDS = 7.0
 REQUEST_TIMEOUT_SECONDS = 20
+FIXTURE_WINDOW_DAYS = 7
 OUTPUT_PATH = Path("data/football.json")
 
 COMPETITIONS = {
@@ -88,6 +89,10 @@ def local_kickoff(utc_date: str) -> str:
     parsed = datetime.fromisoformat(utc_date.replace("Z", "+00:00"))
     return parsed.astimezone(PARIS).strftime("%H:%M")
 
+def local_match_date(utc_date: str) -> str:
+    parsed = datetime.fromisoformat(utc_date.replace("Z", "+00:00"))
+    return parsed.astimezone(PARIS).date().isoformat()
+
 
 def map_match(match: dict[str, Any]) -> dict[str, Any]:
     status = match_status(match.get("status", "SCHEDULED"))
@@ -109,6 +114,7 @@ def map_match(match: dict[str, Any]) -> dict[str, Any]:
         "as": result.get("away"),
         "status": status,
         "time": time_label,
+        "date": local_match_date(match["utcDate"]),
         "venue": match.get("venue"),
     }
 
@@ -141,7 +147,9 @@ def build_competition(
     matches_payload: dict[str, Any],
     standings_payload: dict[str, Any],
     scorers_payload: dict[str, Any],
+    today: date | None = None,
 ) -> dict[str, Any]:
+    snapshot_day = today or datetime.now(PARIS).date()
     table = standings_table(standings_payload)
     scorers = map_scorers(scorers_payload)
     top_scorer_by_club = {item["club"]: item for item in scorers}
@@ -168,15 +176,16 @@ def build_competition(
         ])
 
     matches = [map_match(match) for match in matches_payload.get("matches") or []]
+    today_matches = [match for match in matches if match["date"] == snapshot_day.isoformat()]
     competition = standings_payload.get("competition") or {}
     season = standings_payload.get("season") or {}
-    goals = sum((match["hs"] or 0) + (match["as"] or 0) for match in matches)
+    goals = sum((match["hs"] or 0) + (match["as"] or 0) for match in today_matches)
     return {
         "name": config["name"],
         "flag": config["flag"],
         "season": season_label(season),
         "round": season.get("currentMatchday") or 0,
-        "liveCount": sum(match["status"] == "live" for match in matches),
+        "liveCount": sum(match["status"] == "live" for match in today_matches),
         "goals": goals,
         "teams": teams,
         "matches": matches,
@@ -188,7 +197,7 @@ def build_competition(
 def fetch_snapshot(client: FootballDataClient, today: date | None = None) -> dict[str, Any]:
     target_day = today or datetime.now(PARIS).date()
     date_from = target_day.isoformat()
-    date_to = (target_day + timedelta(days=1)).isoformat()
+    date_to = (target_day + timedelta(days=FIXTURE_WINDOW_DAYS)).isoformat()
     competitions = {}
 
     for key, config in COMPETITIONS.items():
@@ -203,7 +212,7 @@ def fetch_snapshot(client: FootballDataClient, today: date | None = None) -> dic
             params={"limit": "10"},
         )
         competitions[key] = build_competition(
-            config, matches_payload, standings_payload, scorers_payload
+            config, matches_payload, standings_payload, scorers_payload, target_day
         )
 
     return {
