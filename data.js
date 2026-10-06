@@ -1,19 +1,18 @@
-window.loadFootballSnapshot = async function (fallbackCompetitions) {
-  if (window.location.protocol === "file:") {
-    return { competitions: fallbackCompetitions, isLive: false };
-  }
-
+window.loadFootballSnapshot = async function () {
+  if (window.location.protocol === "file:") return { isLive: false };
   try {
     const response = await fetch("./data/football.json", { cache: "no-cache" });
-    if (!response.ok) return { competitions: fallbackCompetitions, isLive: false };
-
+    if (!response.ok) return { isLive: false };
     const snapshot = await response.json();
-    const expectedKeys = Object.keys(fallbackCompetitions);
+    const expectedKeys = ["premier", "laliga", "bundesliga", "seriea", "ligue1"];
     const snapshotKeys = Object.keys(snapshot.competitions || {});
-    if (snapshot.schemaVersion !== 1 || !expectedKeys.every((key) => snapshotKeys.includes(key))) {
-      return { competitions: fallbackCompetitions, isLive: false };
+    const validCompetitions = expectedKeys.every((key) => {
+      const competition = snapshot.competitions?.[key];
+      return competition && Array.isArray(competition.teams) && Array.isArray(competition.matches) && Array.isArray(competition.scorers);
+    });
+    if (snapshot.schemaVersion !== 1 || !expectedKeys.every((key) => snapshotKeys.includes(key)) || !validCompetitions) {
+      return { isLive: false };
     }
-
     return {
       competitions: snapshot.competitions,
       isLive: true,
@@ -22,6 +21,6 @@ window.loadFootballSnapshot = async function (fallbackCompetitions) {
       source: snapshot.source
     };
   } catch {
-    return { competitions: fallbackCompetitions, isLive: false };
+    return { isLive: false };
   }
 };
