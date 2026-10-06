@@ -16,7 +16,8 @@ API_BASE = "https://api.football-data.org/v4"
 PARIS = ZoneInfo("Europe/Paris")
 MIN_REQUEST_INTERVAL_SECONDS = 7.0
 REQUEST_TIMEOUT_SECONDS = 20
-FIXTURE_WINDOW_DAYS = 7
+FIXTURE_HISTORY_DAYS = 3
+FIXTURE_FUTURE_DAYS = 7
 OUTPUT_PATH = Path("data/football.json")
 
 COMPETITIONS = {
@@ -196,8 +197,8 @@ def build_competition(
 
 def fetch_snapshot(client: FootballDataClient, today: date | None = None) -> dict[str, Any]:
     target_day = today or datetime.now(PARIS).date()
-    date_from = target_day.isoformat()
-    date_to = (target_day + timedelta(days=FIXTURE_WINDOW_DAYS)).isoformat()
+    date_from = (target_day - timedelta(days=FIXTURE_HISTORY_DAYS)).isoformat()
+    date_to = (target_day + timedelta(days=FIXTURE_FUTURE_DAYS + 1)).isoformat()
     competitions = {}
 
     for key, config in COMPETITIONS.items():
