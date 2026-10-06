@@ -90,6 +90,7 @@ def local_kickoff(utc_date: str) -> str:
     parsed = datetime.fromisoformat(utc_date.replace("Z", "+00:00"))
     return parsed.astimezone(PARIS).strftime("%H:%M")
 
+
 def local_match_date(utc_date: str) -> str:
     parsed = datetime.fromisoformat(utc_date.replace("Z", "+00:00"))
     return parsed.astimezone(PARIS).date().isoformat()
@@ -220,7 +221,7 @@ def fetch_snapshot(client: FootballDataClient, today: date | None = None) -> dic
         "schemaVersion": 1,
         "source": "Football-Data.org",
         "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "date": date_from,
+        "date": target_day.isoformat(),
         "competitions": competitions,
     }
 
